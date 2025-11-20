@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Nav from "../components/Nav"
 
-export default function Home() {
+export default function Home({ navigation }) {
     // ========== 상태 관리 ==========
     // 현재 선택된 카테고리 (기본값: '음식')
     const [selectedCategory, setSelectedCategory] = useState('음식');
@@ -10,26 +11,24 @@ export default function Home() {
     const [searchText, setSearchText] = useState('');
     // 현재 페이지 번호
     const [currentPage, setCurrentPage] = useState(1);
-    // 하단 네비게이션에서 선택된 탭 (기본값: 'board')
-    const [selectedTab, setSelectedTab] = useState('home');
 
     // 카테고리 목록
     const categories = ['음식', '빨래', '청소', '금융'];
     
     // 전체 게시글 데이터 (실제로는 API에서 가져옴)
     const allPosts = [
-        { id: 1, category: "음식", title: "넘들 넘들 그거 앎?", author: "나 남은 개쩜", date: "2025.11.14" },
-        { id: 2, category: "음식", title: "오늘 저녁 뭐 먹을까요?", author: "배고픈사람", date: "2025.11.14" },
-        { id: 3, category: "음식", title: "김치찌개 맛있게 끓이는 법", author: "요리고수", date: "2025.11.13" },
-        { id: 4, category: "빨래", title: "흰옷 누렇게 변했어요", author: "빨래초보", date: "2025.11.14" },
-        { id: 5, category: "빨래", title: "드럼세탁기 추천해주세요", author: "새집이사", date: "2025.11.13" },
-        { id: 6, category: "청소", title: "곰팡이 제거 어떻게 하나요", author: "깔끔쟁이", date: "2025.11.14" },
-        { id: 7, category: "청소", title: "청소기 vs 로봇청소기", author: "청소러버", date: "2025.11.13" },
-        { id: 8, category: "금융", title: "적금 상품 추천 부탁드려요", author: "재테크왕", date: "2025.11.14" },
-        { id: 9, category: "금융", title: "주식 처음 시작하는데 조언 구합니다", author: "주린이", date: "2025.11.13" },
-        { id: 10, category: "음식", title: "집에서 파스타 만들기", author: "이탈리안요리사", date: "2025.11.12" },
-        { id: 11, category: "음식", title: "밥솥으로 빵 만들 수 있나요?", author: "베이킹초보", date: "2025.11.12" },
-        { id: 12, category: "빨래", title: "울코트 세탁 방법", author: "겨울준비", date: "2025.11.12" },
+        { id: 1, category: "음식", title: "넘들 넘들 그거 앎?", author: "나 남은 개쩜", date: "2025.11.14", content: "넘들 넘들 그거 앎? 정말 재미있는 이야기입니다. 자세한 내용은 본문을 확인하세요." },
+        { id: 2, category: "음식", title: "오늘 저녁 뭐 먹을까요?", author: "배고픈사람", date: "2025.11.14", content: "오늘 저녁 메뉴를 고민 중입니다. 추천 부탁드려요!" },
+        { id: 3, category: "음식", title: "김치찌개 맛있게 끓이는 법", author: "요리고수", date: "2025.11.13", content: "김치찌개를 맛있게 끓이는 비법을 공유합니다. 재료와 조리법을 확인하세요." },
+        { id: 4, category: "빨래", title: "흰옷 누렇게 변했어요", author: "빨래초보", date: "2025.11.14", content: "흰옷이 누렇게 변했는데 어떻게 복구할 수 있을까요? 도움 부탁드립니다." },
+        { id: 5, category: "빨래", title: "드럼세탁기 추천해주세요", author: "새집이사", date: "2025.11.13", content: "드럼세탁기를 구매하려고 하는데 추천 부탁드립니다. 사용 후기 공유해주세요!" },
+        { id: 6, category: "청소", title: "곰팡이 제거 어떻게 하나요", author: "깔끔쟁이", date: "2025.11.14", content: "집안 곰팡이를 제거하는 방법을 알고 싶습니다. 효과적인 방법을 알려주세요." },
+        { id: 7, category: "청소", title: "청소기 vs 로봇청소기", author: "청소러버", date: "2025.11.13", content: "청소기와 로봇청소기 중 어떤 것이 더 효율적인지 고민입니다. 의견 부탁드립니다." },
+        { id: 8, category: "금융", title: "적금 상품 추천 부탁드려요", author: "재테크왕", date: "2025.11.14", content: "적금 상품을 알아보고 있는데 추천 부탁드립니다. 이율과 조건을 고려해주세요." },
+        { id: 9, category: "금융", title: "주식 처음 시작하는데 조언 구합니다", author: "주린이", date: "2025.11.13", content: "주식을 처음 시작하려고 하는데 조언 부탁드립니다. 초보자를 위한 팁을 알려주세요." },
+        { id: 10, category: "음식", title: "집에서 파스타 만들기", author: "이탈리안요리사", date: "2025.11.12", content: "집에서 간단하게 파스타를 만드는 방법을 공유합니다. 재료와 레시피를 확인하세요." },
+        { id: 11, category: "음식", title: "밥솥으로 빵 만들 수 있나요?", author: "베이킹초보", date: "2025.11.12", content: "밥솥으로 빵을 만들 수 있는지 궁금합니다. 성공 사례를 공유해주세요!" },
+        { id: 12, category: "빨래", title: "울코트 세탁 방법", author: "겨울준비", date: "2025.11.12", content: "울코트를 세탁하는 방법을 알고 싶습니다. 손상 없이 세탁하는 팁을 알려주세요." },
     ];
 
     // ========== 필터링 로직 ==========
@@ -71,16 +70,9 @@ export default function Home() {
 
     // 게시글 클릭 핸들러
     const handlePostPress = (post) => {
-        alert(`게시글 선택: ${post.title}`);
-        // 실제로는 게시글 상세 페이지로 이동
+        navigation.navigate('Detail', {post})
     };
 
-    // 네비게이션 탭 변경 핸들러
-    const handleTabChange = (tab) => {
-        setSelectedTab(tab);
-        alert(`${tab} 탭으로 이동`);
-        // 실제로는 해당 페이지로 네비게이션
-    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -172,47 +164,7 @@ export default function Home() {
                 </View>
             )}
 
-            {/* 하단 네비게이션 */}
-            <View style={styles.bottomNav}>
-                {/* 홈 버튼 */}
-                <TouchableOpacity 
-                    style={styles.navItem}
-                    onPress={() => handleTabChange('home')}
-                >
-                    <View style={[
-                        styles.navIconHome,
-                        selectedTab === 'home' && styles.activeNavIcon
-                    ]}>
-                        <Text style={styles.navIconText}>🏠</Text> {/* 홈 아이콘 */}
-                    </View>
-                </TouchableOpacity>
-
-                {/* 게시글 작성 버튼 */}
-                <TouchableOpacity 
-                    style={styles.navItem}
-                    onPress={() => handleTabChange('write')}
-                >
-                    <View style={[
-                        styles.navIconWrite,
-                        selectedTab === 'write' && styles.activeNavIcon
-                    ]}>
-                        <Text style={styles.navIconText}>✍️</Text> {/* 게시글 작성 아이콘 */}
-                    </View>
-                </TouchableOpacity>
-
-                {/* 마이페이지 버튼 */}
-                <TouchableOpacity 
-                    style={styles.navItem}
-                    onPress={() => handleTabChange('profile')}
-                >
-                    <View style={[
-                        styles.navIconProfile,
-                        selectedTab === 'profile' && styles.activeNavIcon
-                    ]}>
-                        <Text style={styles.navIconText}>👤</Text> {/* 마이페이지 아이콘 */}
-                    </View>
-                </TouchableOpacity>
-            </View>
+            <Nav />
         </SafeAreaView>
     );
 }
