@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
-export default function Signin() {
+export default function Signup() {
   const {register, handleSubmit, formState:{errors}} = useForm();
   const onValid = (data) => {
 
@@ -15,22 +15,8 @@ export default function Signin() {
         source={require('../assets/common/logo-white.png')}
         style={styles.logo}
       />
-      <Text style={styles.membertext}>회원가입</Text>
+      <Text style={styles.membertext}>로그인</Text>
       <View style={styles.inputcover}>
-        <View style={styles.input}>
-          <Text style={styles.inputtitle}>닉네임</Text>
-          <TextInput style={styles.inputtext} placeholderTextColor="#AEAEAE" placeholder='닉네임을 입력해주세요.' {...register("nickname",{
-            required:"닉네임은 필수 입력 사항입니다.",
-          })}></TextInput>
-          <View style={styles.inputline} />
-        </View>
-        <View style={styles.input}>
-          <Text style={styles.inputtitle}>비밀번호</Text>
-          <TextInput style={styles.inputtext} placeholderTextColor="#AEAEAE" placeholder='비밀번호를 입력해주세요.'{...register("pw",{
-            required:"비밀번호는 필수 입력 사항입니다.",
-          })}></TextInput>
-          <View style={styles.inputline} />
-        </View>
         <View style={styles.input}>
           <Text style={styles.inputtitle}>이메일</Text>
           <TextInput style={styles.inputtext} placeholderTextColor="#AEAEAE" placeholder='이메일을 입력해주세요.'{...register("email",{
@@ -38,13 +24,20 @@ export default function Signin() {
           })}></TextInput>
           <View style={styles.inputline} />
         </View>
+        <View style={styles.input}>
+          <Text style={styles.inputtitle}>비밀번호</Text>
+          <TextInput style={styles.inputtext} placeholderTextColor="#AEAEAE" placeholder='비밀번호를 입력해주세요.' secureTextEntry={true} {...register("pw",{
+            required:"비밀번호는 필수 입력 사항입니다.",
+          })}></TextInput>
+          <View style={styles.inputline} />
+        </View>
       </View>
       <Pressable style={styles.button}>
-        <Text style={styles.buttontext}>회원가입</Text>
+        <Text style={styles.buttontext}>로그인</Text>
       </Pressable>
       <View style={styles.dologincover}>
-      <Text style={styles.isaddress}>이미 계정이 있으신가요?</Text>
-      <Text style={styles.dologin}>로그인</Text>
+      <Text style={styles.isaddress}>계정이 없으신가요?</Text>
+      <Text style={styles.dologin}>회원가입</Text>
       </View>
     </SafeAreaView>
   );
@@ -54,11 +47,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
-    // backgroundColor: '#000',  // 필요하면
   },
   logo: {
-    width: 100, // 숫자 단위 (dp)
+    width: 100, 
     height: 100,
     marginBottom: 60,
     resizeMode: 'contain',
@@ -70,35 +63,33 @@ const styles = StyleSheet.create({
   },
   inputcover: {
     width: '75%',
-    height: 272,
     padding: 10,
-    gap: 24,
     marginBottom: 30,
   },
   inputtitle: {
     fontSize: 16,
     fontWeight: '600',
     color: '#6F6D6D',
-    fontWeight: '600',
+    marginBottom: 8,
   },
   inputtext: {
     width: '100%',
-    height: 28,
-    border:1,
+    minHeight: 40,
     color: "#000",
     fontSize: 20,
     fontWeight: '500',
+    paddingVertical: 8,
   },
   inputline: {
     width: '100%',
     height: 1,
     backgroundColor: '#AEAEAE',
+    marginBottom: 24,
   },
   input: {
     width: '100%',
     display: 'flex',
     alignItems: 'flex-start',
-    gap: 12,
   },
   button:{
     width:293,
